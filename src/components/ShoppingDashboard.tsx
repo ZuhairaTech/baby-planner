@@ -12,6 +12,11 @@ import {
   TriangleAlert,
   House,
   ListChecks,
+  Images,
+  Heart,
+  CalendarDays,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 import ItemCard from "./ItemCard";
@@ -19,6 +24,8 @@ import StatCard from "./StatCard";
 
 import { ShoppingItem } from "@/types/shopping";
 import { formatRM } from "@/lib/money";
+import BabyCountdown from "./BabyCountdown";
+import Memories from "./Memories";
 
 export default function ShoppingDashboard() {
   const [items, setItems] = useState<ShoppingItem[]>([]);
@@ -29,7 +36,7 @@ export default function ShoppingDashboard() {
   const [category, setCategory] = useState("All");
   const [status, setStatus] = useState("All");
   const [priority, setPriority] = useState("All");
-  const [activeTab, setActiveTab] = useState<"home" | "shopping">("home");
+  const [activeTab, setActiveTab] =useState<"home" | "shopping" | "memories">("home");
 
   async function loadItems() {
     try {
@@ -213,14 +220,18 @@ export default function ShoppingDashboard() {
 
                 <h1 className="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">
                 {activeTab === "home"
-                    ? "Baby Preparation"
-                    : "Shopping List"}
+                ? "Baby Preparation"
+                : activeTab === "shopping"
+                ? "Shopping List"
+                : "Our Memories"}
                 </h1>
 
                 <p className="mt-2 text-stone-500">
                 {activeTab === "home"
                     ? "Everything we need before and after baby arrives."
-                    : "Browse, search and filter everything we need."}
+                    : activeTab === "shopping"
+                    ? "Browse, search and filter everything we need."
+                    : "Little moments we want to remember forever."}
                 </p>
             </div>
 
@@ -303,6 +314,8 @@ export default function ShoppingDashboard() {
                 </div>
             </section>
 
+            {/* BABY COUNTDOWN */}
+            <BabyCountdown />
 
             {/* HIGH PRIORITY */}
 
@@ -521,6 +534,9 @@ export default function ShoppingDashboard() {
             </section>
             </>
         )}
+        {activeTab === "memories" && (
+          <Memories />
+        )}
         </div>
 
 
@@ -530,7 +546,7 @@ export default function ShoppingDashboard() {
 
         <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-stone-200 bg-white/95 px-4 pb-[max(12px,env(safe-area-inset-bottom))] pt-2 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] backdrop-blur">
 
-        <div className="mx-auto grid max-w-md grid-cols-2 gap-2">
+        <div className="mx-auto grid max-w-md grid-cols-3 gap-2">
 
             {/* HOME */}
 
@@ -575,6 +591,33 @@ export default function ShoppingDashboard() {
             <ListChecks size={22} />
 
             <span>Shopping</span>
+            </button>
+
+            <button
+              onClick={() => {
+                setActiveTab("memories");
+
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
+              className={`flex flex-col items-center justify-center gap-1 rounded-2xl py-2.5 text-xs font-semibold transition ${
+                activeTab === "memories"
+                  ? "bg-rose-50 text-rose-600"
+                  : "text-stone-400 hover:bg-stone-50 hover:text-stone-700"
+              }`}
+            >
+              <Heart
+                size={22}
+                fill={
+                  activeTab === "memories"
+                    ? "currentColor"
+                    : "none"
+                }
+              />
+
+              <span>Memories</span>
             </button>
 
         </div>
